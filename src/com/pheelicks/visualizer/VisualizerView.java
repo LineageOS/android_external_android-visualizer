@@ -72,7 +72,7 @@ public class VisualizerView extends View {
         mFFTBytes = null;
 
         mFlashPaint.setColor(Color.argb(122, 255, 255, 255));
-        mFadePaint.setColor(Color.argb(238, 255, 255, 255)); // Adjust alpha to
+        mFadePaint.setColor(Color.argb(200, 255, 255, 255)); // Adjust alpha to
                                                              // change how
                                                              // quickly the
                                                              // image fades
@@ -132,7 +132,6 @@ public class VisualizerView extends View {
 
         }
         mVisualizer.setEnabled(true);
-
     }
 
     public void unlink() {
