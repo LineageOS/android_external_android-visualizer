@@ -54,8 +54,6 @@ public class VisualizerView extends View {
     private AudioData mAudioData;
     private FFTData mFftData;
 
-    private long mLastUpdate;
-
     public VisualizerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs);
         init();
@@ -136,18 +134,10 @@ public class VisualizerView extends View {
             };
 
             mVisualizer.setDataCaptureListener(captureListener,
-                    (int) (Visualizer.getMaxCaptureRate() * 0.75), captureWaveForm(), captureFft());
+                    (int) (Visualizer.getMaxCaptureRate() * 0.75), true, true);
 
         }
         mVisualizer.setEnabled(true);
-    }
-
-    protected boolean captureWaveForm() {
-        return false;
-    }
-
-    protected boolean captureFft() {
-        return true;
     }
 
     public void unlink() {
@@ -190,7 +180,6 @@ public class VisualizerView extends View {
     public void updateVisualizer(byte[] bytes) {
         mBytes = bytes;
         mAudioData.bytes = bytes;
-        mLastUpdate = System.currentTimeMillis();
         invalidate();
     }
 
@@ -204,7 +193,6 @@ public class VisualizerView extends View {
     public void updateVisualizerFFT(byte[] bytes) {
         mFFTBytes = bytes;
         mFftData.bytes = bytes;
-        mLastUpdate = System.currentTimeMillis();
         invalidate();
     }
 
@@ -255,10 +243,8 @@ public class VisualizerView extends View {
             }
         }
 
-        if (System.currentTimeMillis() - mLastUpdate < 400) {
-            // Fade out old contents
-            mCanvas.drawPaint(mFadePaint);
-        }
+        // Fade out old contents
+        mCanvas.drawPaint(mFadePaint);
 
         if (mFlash) {
             mFlash = false;
