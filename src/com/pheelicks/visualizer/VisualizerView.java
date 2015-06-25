@@ -53,6 +53,7 @@ public class VisualizerView extends View {
     private Matrix mMatrix;
     private AudioData mAudioData;
     private FFTData mFftData;
+    private boolean mDrawingEnabled = true;
 
     public VisualizerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs);
@@ -161,6 +162,10 @@ public class VisualizerView extends View {
         mRenderers.clear();
     }
 
+    public void setDrawingEnabled(boolean draw) {
+        mDrawingEnabled = draw;
+    }
+
     /**
      * Call to release the resources used by VisualizerView. Like with the
      * MediaPlayer it is good practice to call this method
@@ -243,15 +248,16 @@ public class VisualizerView extends View {
             }
         }
 
-        // Fade out old contents
-        mCanvas.drawPaint(mFadePaint);
+        if (mDrawingEnabled) {
+            // Fade out old contents
+            mCanvas.drawPaint(mFadePaint);
 
-        if (mFlash) {
-            mFlash = false;
-            mCanvas.drawPaint(mFlashPaint);
+            if (mFlash) {
+                mFlash = false;
+                mCanvas.drawPaint(mFlashPaint);
+            }
+            canvas.drawBitmap(mCanvasBitmap, mMatrix, null);
         }
-
-        canvas.drawBitmap(mCanvasBitmap, mMatrix, null);
     }
 
     // Methods for adding renderers to visualizer
